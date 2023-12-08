@@ -12,7 +12,7 @@ class IncomeCrudController extends BaseCrudController
     protected $model   = Model::class;
     protected $request = Request::class;
     protected $scopes  = [
-        'income'
+        'selectIncome'
     ];
 
     /**

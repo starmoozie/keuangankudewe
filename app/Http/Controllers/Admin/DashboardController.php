@@ -58,7 +58,7 @@ class DashboardController extends Controller
      */
     private function widgets(): array
     {
-        $transactions = Transaction::sumEachType()
+        $transactions = Transaction::selectSumEachType()
             ->orderByDesc('is_income')
             ->get();
 

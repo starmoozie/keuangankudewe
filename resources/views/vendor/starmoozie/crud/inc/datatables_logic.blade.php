@@ -103,7 +103,7 @@
         functionsToRunOnDataTablesDrawEvent: [],
         addFunctionToDataTablesDrawEventQueue: function (functionName) {
             if (this.functionsToRunOnDataTablesDrawEvent.indexOf(functionName) == -1) {
-            this.functionsToRunOnDataTablesDrawEvent.push(functionName);
+                this.functionsToRunOnDataTablesDrawEvent.push(functionName);
             }
         },
         responsiveToggle: function(dt) {
@@ -143,23 +143,23 @@
                         } ),
                         renderer: function ( api, rowIdx, columns ) {
 
-                        var data = $.map( columns, function ( col, i ) {
-                            var columnHeading = crud.table.columns().header()[col.columnIndex];
+                            var data = $.map( columns, function ( col, i ) {
+                                var columnHeading = crud.table.columns().header()[col.columnIndex];
 
-                            // hide columns that have VisibleInModal false
-                            if ($(columnHeading).attr('data-visible-in-modal') == 'false') {
-                                return '';
-                            }
+                                // hide columns that have VisibleInModal false
+                                if ($(columnHeading).attr('data-visible-in-modal') == 'false') {
+                                    return '';
+                                }
 
-                            return '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
-                                        '<td style="vertical-align:top; border:none;"><strong>'+col.title.trim()+':'+'<strong></td> '+
-                                        '<td style="padding-left:10px;padding-bottom:10px; border:none;">'+col.data+'</td>'+
-                                    '</tr>';
-                        } ).join('');
+                                return '<tr data-dt-row="'+col.rowIndex+'" data-dt-column="'+col.columnIndex+'">'+
+                                            '<td style="vertical-align:top; border:none;"><strong>'+col.title.trim()+':'+'<strong></td> '+
+                                            '<td style="padding-left:10px;padding-bottom:10px; border:none;">'+col.data+'</td>'+
+                                        '</tr>';
+                            } ).join('');
 
-                        return data ?
-                            $('<table class="table table-striped mb-0">').append( '<tbody>' + data + '</tbody>' ) :
-                            false;
+                            return data
+                                ? $('<table class="table table-striped mb-0">').append( '<tbody>' + data + '</tbody>' )
+                                : false;
                         },
                     }
                 },
@@ -178,7 +178,6 @@
                     if developer forced field into table 'visibleInTable => true' we make sure when saving datatables state
                     that it reflects the developer decision.
                 */
-
                 stateSaveParams: function(settings, data) {
 
                     localStorage.setItem('{{ Str::slug($crud->getRoute()) }}_list_url_time', data.time);
@@ -284,13 +283,15 @@
                                 showRowValue(api, index, amount);
                             }
                         break;
+
                         case "bank":
                             column_number = 2;
                             amount        = sumRow(api, column_number);
 
                             showRowValue(api, column_number, amount);
                         break;
-                        default:
+
+                        default: // Income & Expense
                             amount = sumRow(api, column_number);
 
                             showRowValue(api, column_number, amount);
@@ -335,6 +336,7 @@
 
 <script type="text/javascript">
     jQuery(document).ready(function($) {
+        const current_page = "{{ $current_page }}";
 
         window.crud.table = $("#crudTable").DataTable(window.crud.dataTableConfiguration);
 
@@ -412,6 +414,12 @@
             if ($('#crudTable').data('has-line-buttons-as-dropdown')) {
                 formatActionColumnAsDropdown();
             }
+
+            // Calculate balance each row
+            if (current_page === "report") {
+                calculateBalanceEachRow()
+            }
+
         } ).dataTable();
 
         // when datatables-colvis (column visibility) is toggled
@@ -425,9 +433,9 @@
             // the table should have the has-hidden-columns class
             crud.table.on( 'responsive-resize', function ( e, datatable, columns ) {
                 if (crud.table.responsive.hasHidden()) {
-                $("#crudTable").removeClass('has-hidden-columns').addClass('has-hidden-columns');
+                    $("#crudTable").removeClass('has-hidden-columns').addClass('has-hidden-columns');
                 } else {
-                $("#crudTable").removeClass('has-hidden-columns');
+                    $("#crudTable").removeClass('has-hidden-columns');
                 }
             } );
         @else
@@ -435,17 +443,17 @@
             // after the user manually resizes the window
             var resizeTimer;
             function resizeCrudTableColumnWidths() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(function() {
-                // Run code here, resizing has "stopped"
-                crud.table.columns.adjust();
-            }, 250);
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    // Run code here, resizing has "stopped"
+                    crud.table.columns.adjust();
+                }, 250);
             }
             $(window).on('resize', function(e) {
-            resizeCrudTableColumnWidths();
+                resizeCrudTableColumnWidths();
             });
             $('.sidebar-toggler').click(function() {
-            resizeCrudTableColumnWidths();
+                resizeCrudTableColumnWidths();
             });
         @endif
     });
@@ -467,6 +475,33 @@
                 });
                 actionCell.prepend('<a class="btn btn-sm px-2 py-1 btn-outline-primary dropdown-toggle actions-buttons-column" href="#" data-toggle="dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">{{ trans('starmoozie::crud.actions') }}</a>');
             });
+        }
+    }
+
+    // Calculate balance each row
+    const calculateBalanceEachRow = () => {
+        let transactions = [];
+
+        crud.table
+            .rows()
+            .every( function ( rowIdx, tableLoop, rowLoop ) {
+                let data = this.data();
+
+                transactions.push( [this.index(), data[3], data[4]] );
+            } );
+
+        let total = 0;
+
+        for (i = 0; i < transactions.length; i++) {
+            const data    = transactions[i];
+            const rowIdx  = data[0];
+            const income  = intVal(data[1].replace(/\D/g, ''));
+            const expense = intVal(data[2].replace(/\D/g, ''));
+
+            const cell   = crud.table.cell( rowIdx, 5);
+                total   += income - expense;
+
+            cell.data( `<div class="text-right">${formatRupiah(total)}</div>` );
         }
     }
 </script>

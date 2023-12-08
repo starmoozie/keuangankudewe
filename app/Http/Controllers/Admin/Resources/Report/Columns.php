@@ -14,18 +14,19 @@ trait Columns
         $this->crud->column('dates')
             ->label(__('starmoozie::title.date'))
             ->type('date');
+        // ->orderable(false);
 
         $this->crud->column('bank')
             ->label(__('starmoozie::title.bank'));
 
-        $this->crud->column('debit')
+        $this->crud->column('income')
             ->label(__('starmoozie::title.income'))
             ->wrapper([
                 'element' => 'div',
                 'class'   => 'text-right'
             ]);
 
-        $this->crud->column('credit')
+        $this->crud->column('expense')
             ->label(__('starmoozie::title.expense'))
             ->wrapper([
                 'element' => 'div',

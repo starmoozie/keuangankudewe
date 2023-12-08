@@ -31,12 +31,12 @@ class Bank extends BaseModel
 
     public function transactionIncomes()
     {
-        return $this->transactions()->income();
+        return $this->transactions()->selectIncome();
     }
 
     public function transactionExpenses()
     {
-        return $this->transactions()->expense();
+        return $this->transactions()->selectExpense();
     }
 
     /*
