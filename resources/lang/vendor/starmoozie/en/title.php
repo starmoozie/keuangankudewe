@@ -32,4 +32,9 @@ return [
     // Tabs
     'general' => 'General',
     'login_information' => 'Login Information',
+
+    // Hint
+    'hint_income_dashboard' => 'Calculate all Incomes from first input transactions.',
+    'hint_expense_dashboard' => 'Calculate all Expenses from first input transactions.',
+    'hint_balance_dashboard' => 'Calculate Balance from first input transactions.',
 ];

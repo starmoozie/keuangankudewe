@@ -119,7 +119,7 @@ class DashboardController extends Controller
             'progressClass' => "progress-bar bg-{$color}",
             'value'         => rupiah($value),
             'description'   => "<a href='{$href}'>{$desc}</a>",
-            'hint'          => __("starmoozie::title.hint_amount_dashboard")
+            'hint'          => __("starmoozie::title.hint_{$label}_dashboard")
         ];
     }
 }
