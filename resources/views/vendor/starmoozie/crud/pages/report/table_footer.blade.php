@@ -1,0 +1,10 @@
+<tfoot>
+    <tr>
+      <th></th>
+      <th>Calculate:</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+</tfoot>
