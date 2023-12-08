@@ -26,6 +26,7 @@ return [
     'balance' => 'Balance',
     'category' => 'Category',
     'transactioncategory' => 'Transaction Category',
+    'calculate' => 'Calculate',
 
     // Tabs
     'general' => 'General',

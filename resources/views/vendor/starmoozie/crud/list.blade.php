@@ -1,7 +1,7 @@
 @extends(starmoozie_view('blank'))
 
 @php
-  $page_has_footer    = ["report", "expense" , "income"];
+  $page_has_footer    = ["report", "expense" , "income", "bank"];
   $current_route      = \Route::currentRouteName();
   $defaultBreadcrumbs = [
     trans('starmoozie::crud.admin') => url(config('starmoozie.base.route_prefix'), 'dashboard'),
@@ -76,6 +76,7 @@
                 {{-- Table columns --}}
                 @foreach ($crud->columns() as $column)
                   <th
+                    class="{{ $column['wrapper']['class'] ?? '' }}"
                     data-orderable="{{ var_export($column['orderable'], true) }}"
                     data-priority="{{ $column['priority'] }}"
                     {{--
@@ -130,11 +131,13 @@
             <tbody>
             </tbody>
 
+            {{-- Footer --}}
             @foreach($page_has_footer as $page)
               @if("{$page}.index" === $current_route)
                 @include("starmoozie::crud.pages.{$page}.table_footer")
               @endif
             @endforeach
+
           </table>
 
           @if ( $crud->buttons()->where('stack', 'bottom')->count() )

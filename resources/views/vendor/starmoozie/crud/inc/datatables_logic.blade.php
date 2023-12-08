@@ -267,26 +267,34 @@
                 let column_number  = 5; // index kolom jumlah kalkulasi yang akan ditampilkan
 
                 if (current_page) {
+                    switch (current_page) {
+                        case "report":
+                            column_number          = [column_number];
+                            const index_start_from = 3; // index kolom dikalkulasi mulai index 3
 
-                    if(current_page === "report") {
-                        column_number          = [column_number];
-                        const index_start_from = 3; // index kolom dikalkulasi mulai index 3
+                            let balance = 0;
+                            for (let index = index_start_from; index <= column_number[column_number.length - 1]; index++) {
+                                if (index < column_number[0]) {
+                                    amount = sumRow(api, index);
+                                    balance = index === index_start_from ? amount : balance - amount;
+                                } else {
+                                    amount = balance;
+                                }
 
-                        let balance = 0;
-                        for (let index = index_start_from; index <= column_number[column_number.length - 1]; index++) {
-                            if (index < column_number[0]) {
-                                amount = sumRow(api, index);
-                                balance = index === index_start_from ? amount : balance - amount;
-                            } else {
-                                amount = balance;
+                                showRowValue(api, index, amount);
                             }
+                        break;
+                        case "bank":
+                            column_number = 2;
+                            amount        = sumRow(api, column_number);
 
-                            showRowValue(api, index, amount);
-                        }
-                    } else {
-                        amount = sumRow(api, column_number);
+                            showRowValue(api, column_number, amount);
+                        break;
+                        default:
+                            amount = sumRow(api, column_number);
 
-                        showRowValue(api, column_number, amount);
+                            showRowValue(api, column_number, amount);
+                        break;
                     }
                 }
             },

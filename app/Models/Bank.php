@@ -24,6 +24,21 @@ class Bank extends BaseModel
     |--------------------------------------------------------------------------
     */
 
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function transactionIncomes()
+    {
+        return $this->transactions()->income();
+    }
+
+    public function transactionExpenses()
+    {
+        return $this->transactions()->expense();
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -35,6 +50,11 @@ class Bank extends BaseModel
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+
+    public function getBalanceAttribute()
+    {
+        return \rupiah($this->incomes - $this->expenses);
+    }
 
     /*
     |--------------------------------------------------------------------------
