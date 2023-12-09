@@ -163,6 +163,6 @@ class BaseCrudController extends CrudController
     private function selectColumns($columns): void
     {
         // Select columns query
-        CRUD::addClause('select', $columns);
+        CRUD::addClause('select', [...$columns, ...['id']]);
     }
 }
