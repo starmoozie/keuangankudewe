@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Admin\Resources\Income;
 
-use App\Constants\TransactionConstant;
-
 trait Fields
 {
     /**
@@ -22,7 +20,7 @@ trait Fields
         $this->crud->field('transactionCategory')
             ->label(__('starmoozie::title.category'))
             ->size(6)
-            ->options(fn ($query) => $query->whereIn('type', [TransactionConstant::BOTH, TransactionConstant::INCOME])->orderBy('name'));
+            ->options(fn ($query) => $query->whereIn('type', Self::TRANSACTION_CATEGORY)->orderBy('name'));
 
         $this->crud->field('amount')
             ->label(__('starmoozie::title.amount'))

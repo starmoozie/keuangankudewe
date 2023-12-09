@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Transaction as Model;
 use App\Http\Requests\ExpenseRequest as Request;
+use App\Constants\TransactionConstant;
 
 class ExpenseCrudController extends BaseCrudController
 {
+    const TRANSACTION_CATEGORY = [TransactionConstant::BOTH, TransactionConstant::EXPENSE];
+
     use Resources\Expense\Main;
 
     protected $model   = Model::class;

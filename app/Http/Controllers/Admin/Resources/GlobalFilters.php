@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Admin\Resources;
 
-use App\Models\TransactionCategory;
-
 trait GlobalFilters
 {
     /**
@@ -54,8 +52,10 @@ trait GlobalFilters
     {
         $this->crud->filter('transactioncategory')
             ->label(__('starmoozie::title.category'))
-            ->type('select2_multiple')
-            ->values(TransactionCategory::whereIn('type', $transaction_types)->pluck('name', 'id')->toArray())
+            ->type('select2_ajax_multiple')
+            ->values(starmoozie_url('filter/transactioncategory'))
+            ->minimum_input_length(0)
+            ->rules($transaction_types)
             ->whenActive(fn ($value) => $this->crud->addClause('selectByTransactionCategory', \json_decode($value)))
             ->apply();
     }

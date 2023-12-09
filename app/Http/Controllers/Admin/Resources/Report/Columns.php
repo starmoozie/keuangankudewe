@@ -14,7 +14,6 @@ trait Columns
         $this->crud->column('dates')
             ->label(__('starmoozie::title.date'))
             ->type('date');
-        // ->orderable(false);
 
         $this->crud->column('bank')
             ->label(__('starmoozie::title.bank'));

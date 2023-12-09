@@ -10,7 +10,8 @@ class BaseApiController extends Controller
     public function filter(Request $request)
     {
         return (new $this->model)
-            ->when($request->q, fn($q) => $q->where($this->column, "LIKE", "%{$request->q}%"))
+            ->when($request->q, fn ($q) => $q->where($this->column, "LIKE", "%{$request->q}%"))
+            ->orderBy($this->column)
             ->pluck($this->column, 'id');
     }
 }

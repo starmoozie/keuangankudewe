@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin\Resources\Report;
 
-use App\Models\Bank;
 use App\Constants\TransactionConstant;
 
 trait Filters

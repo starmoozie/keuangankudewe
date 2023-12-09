@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Admin\Resources\Expense;
 
-use App\Constants\TransactionConstant;
-
 trait Filters
 {
     use \App\Http\Controllers\Admin\Resources\GlobalFilters;
@@ -19,7 +17,7 @@ trait Filters
 
         $this->dateRangeFilter('dates', 'selectByDatesRange');
 
-        $this->transactionCategoryFilter([TransactionConstant::BOTH, TransactionConstant::EXPENSE]);
+        $this->transactionCategoryFilter(Self::TRANSACTION_CATEGORY);
 
         $this->bankFilter();
     }

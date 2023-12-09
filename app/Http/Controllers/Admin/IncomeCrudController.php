@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Transaction as Model;
 use App\Http\Requests\IncomeRequest as Request;
+use App\Constants\TransactionConstant;
 
 class IncomeCrudController extends BaseCrudController
 {
+    const TRANSACTION_CATEGORY = [TransactionConstant::BOTH, TransactionConstant::INCOME];
+
     use Resources\Income\Main;
 
     protected $model   = Model::class;
