@@ -13,8 +13,6 @@ trait Filters
      */
     protected function setFilters()
     {
-        $this->creatorFilter();
-
         $this->dateRangeFilter('dates', 'selectByDatesRange');
 
         $this->transactionCategoryFilter(Self::TRANSACTION_CATEGORY);

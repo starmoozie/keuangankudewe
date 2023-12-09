@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Admin\Resources\Income;
 
 trait Columns
 {
-    use \App\Http\Controllers\Admin\Resources\GlobalColumns;
-
     /**
      * Define create / update form fields.
      * 
