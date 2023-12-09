@@ -1,4 +1,4 @@
-<h3 style="text-align: center;">Simple Finance</h3>
+**_<h3 style="text-align: center;">Simple Finance</h3>_**
 ![image info](./images/report.png)
 
 ## About App
