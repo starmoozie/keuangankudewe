@@ -25,7 +25,9 @@ class BaseCrudController extends CrudController
     use \Starmoozie\LaravelMenuPermission\app\Traits\CheckPermission;
 
     protected $orders  = [];
-    protected $scopes = [];
+    protected $scopes  = [];
+    protected $select_columns  = [];
+    protected $exclude_columns = [];
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -50,6 +52,20 @@ class BaseCrudController extends CrudController
         // If has scopes
         foreach ($this->scopes as $scope) {
             CRUD::addClause($scope);
+        }
+
+        // If set excluse columns
+        if (count($this->exclude_columns)) {
+            $this->selectColumns(
+                collect((new $this->model)->getFillable())
+                    ->filter(fn ($item) => !in_array($item, $this->exclude_columns))
+                    ->toArray()
+            );
+        }
+
+        // If set select columns
+        if (count($this->select_columns)) {
+            $this->selectColumns($this->select_columns);
         }
     }
 
@@ -139,5 +155,14 @@ class BaseCrudController extends CrudController
     protected function setFilters()
     {
         //
+    }
+
+    /**
+     * Define selected columns.
+     */
+    private function selectColumns($columns): void
+    {
+        // Select columns query
+        CRUD::addClause('select', $columns);
     }
 }

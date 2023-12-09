@@ -21,6 +21,12 @@ class ExpenseCrudController extends BaseCrudController
         ['name' => 'dates', 'type' => 'desc'],
         ['name' => 'created_at', 'type' => 'desc'],
     ];
+    protected $exclude_columns = [
+        'details',
+        'created_by',
+        'updated_at',
+        'is_income'
+    ];
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.

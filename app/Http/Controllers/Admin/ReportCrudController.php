@@ -15,6 +15,13 @@ class ReportCrudController extends BaseCrudController
         ['name' => 'dates', 'type' => 'asc'],
         ['name' => 'created_at', 'type' => 'asc'],
     ];
+    protected $exclude_columns = [
+        'notes',
+        'details',
+        'created_by',
+        'updated_at',
+        'transaction_category_id',
+    ];
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
