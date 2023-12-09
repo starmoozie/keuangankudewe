@@ -13,5 +13,8 @@ trait Columns
     {
         $this->crud->column('name')
             ->label(__('starmoozie::base.name'));
+
+        $this->crud->column('type_alias')
+            ->label(__('starmoozie::title.category'));
     }
 }
