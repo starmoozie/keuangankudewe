@@ -11,7 +11,31 @@ class ReportCrudController extends BaseCrudController
 
     protected $model   = Model::class;
     protected $request = Request::class;
-    protected $orders  = [['name' => 'dates', 'type' => 'desc']];
+    protected $orders  = [
+        ['name' => 'dates', 'type' => 'asc'],
+        ['name' => 'created_at', 'type' => 'asc'],
+    ];
+    protected $exclude_columns = [
+        'notes',
+        'details',
+        'created_by',
+        'updated_at',
+        'transaction_category_id',
+    ];
+
+    /**
+     * Configure the CrudPanel object. Apply settings to all operations.
+     * 
+     * @return void
+     */
+    public function setup()
+    {
+        parent::setup();
+
+        if (!\request()->has('dates')) {
+            $this->crud->addClause('selectCurrentMonth');
+        }
+    }
 
     /**
      * Define what happens when the List operation is loaded.

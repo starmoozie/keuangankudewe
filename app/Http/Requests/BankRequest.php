@@ -14,12 +14,15 @@ class BankRequest extends BaseRequest
      */
     public function rules()
     {
+        $is_update = $this->method() === "PUT";
+        $id        = \request()->id;
+
         return [
             'name' => [
                 'max:10',
                 'required',
                 'regex:/^[a-z A-Z]+$/',
-                Rule::unique(Bank::class)
+                Rule::unique(Bank::class)->when($is_update, fn ($q) => $q->ignore($id))
             ]
         ];
     }

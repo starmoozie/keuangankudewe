@@ -41,13 +41,12 @@ class CheckAmountNotGreaterThanRule implements Rule
 
     private function checkBank($value)
     {
-        $incomes  = Transaction::income()->sum('details->amount');
-        $expenses = Transaction::expense()->fromBank()->sum('details->amount');
+        $incomes  = Transaction::selectIncome()->sum('details->amount');
+        $expenses = Transaction::selectExpense()->fromBank()->sum('details->amount');
 
         if (\request()->id) {
             # code...
         } else {
-
         }
         dd($incomes, $expenses);
     }
@@ -55,7 +54,7 @@ class CheckAmountNotGreaterThanRule implements Rule
     private function checkWallet($value)
     {
         $wallet   = Wallet::sum('amount');
-        $expenses = Transaction::expense()->fromWallet()->sum('details->amount');
+        $expenses = Transaction::selectExpense()->fromWallet()->sum('details->amount');
 
         if (\request()->id) {
             $current  = Transaction::find(\request()->id);

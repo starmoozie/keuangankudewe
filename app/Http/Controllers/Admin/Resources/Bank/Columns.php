@@ -13,5 +13,12 @@ trait Columns
     {
         $this->crud->column('name')
             ->label(__('starmoozie::base.name'));
+
+        $this->crud->column('balance')
+            ->label(__('starmoozie::title.balance'))
+            ->wrapper([
+                'element' => 'div',
+                'class'   => 'text-right'
+            ]);
     }
 }

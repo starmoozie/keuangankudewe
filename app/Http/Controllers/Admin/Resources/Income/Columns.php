@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Admin\Resources\Income;
 
 trait Columns
 {
-    use \App\Http\Controllers\Admin\Resources\GlobalColumns;
-
     /**
      * Define create / update form fields.
      * 
@@ -29,6 +27,10 @@ trait Columns
             ->label(__('starmoozie::title.bank'));
 
         $this->crud->column('amount_formatted')
-            ->label(__('starmoozie::title.amount'));
+            ->label(__('starmoozie::title.amount'))
+            ->wrapper([
+                'element' => 'div',
+                'class'   => 'text-right'
+            ]);
     }
 }

@@ -12,19 +12,31 @@ trait Columns
     protected function setColumns()
     {
         $this->crud->column('dates')
-        ->label(__('starmoozie::title.date'))
-        ->type('date');
+            ->label(__('starmoozie::title.date'))
+            ->type('date');
 
         $this->crud->column('bank')
-        ->label(__('starmoozie::title.bank'));
+            ->label(__('starmoozie::title.bank'));
 
-        $this->crud->column('debit')
-            ->label(__('starmoozie::title.income'));
+        $this->crud->column('income')
+            ->label(__('starmoozie::title.income'))
+            ->wrapper([
+                'element' => 'div',
+                'class'   => 'text-right'
+            ]);
 
-        $this->crud->column('credit')
-            ->label(__('starmoozie::title.expense'));
+        $this->crud->column('expense')
+            ->label(__('starmoozie::title.expense'))
+            ->wrapper([
+                'element' => 'div',
+                'class'   => 'text-right'
+            ]);
 
         $this->crud->column('')
-            ->label(__('starmoozie::title.balance'));
+            ->label(__('starmoozie::title.balance'))
+            ->wrapper([
+                'element' => 'div',
+                'class'   => 'text-right'
+            ]);
     }
 }

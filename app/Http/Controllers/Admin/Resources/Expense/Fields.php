@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Admin\Resources\Expense;
 
-use App\Constants\Type;
-
 trait Fields
 {
     /**
@@ -21,7 +19,8 @@ trait Fields
 
         $this->crud->field('transactionCategory')
             ->label(__('starmoozie::title.category'))
-            ->size(6);
+            ->size(6)
+            ->options(fn ($query) => $query->whereIn('type', Self::TRANSACTION_CATEGORY)->orderBy('name'));
 
         $this->crud->field('amount')
             ->label(__('starmoozie::title.amount'))
@@ -30,38 +29,11 @@ trait Fields
 
         $this->crud->field('bank')
             ->label(__('starmoozie::title.bank'))
-            ->size(6);
+            ->size(6)
+            ->options(fn ($query) => $query->orderBy('name'));
 
         $this->crud->field('notes')
             ->label(__('starmoozie::title.note'))
             ->type('textarea');
-    }
-
-    protected function detailSubfields()
-    {
-        return [
-            [
-                'name'       => 'nominal',
-                'label'      => __('starmoozie::title.nominal'),
-                'prefix'     => 'Rp',
-                'wrapper'    => ['class' => 'form-group col-md-4'],
-                'attributes' => ['required' => 'required']
-            ],
-            [
-                'name'       => 'banks',
-                'type'  => 'relationship',
-                'attribute' => 'name',
-                'label'      => __('starmoozie::title.nominal'),
-                'prefix'     => 'Rp',
-                'wrapper'    => ['class' => 'form-group col-md-4'],
-                'attributes' => ['required' => 'required']
-            ],
-            [
-                'name'    => 'note',
-                'label'   => __('starmoozie::title.note'),
-                'type'    => 'textarea',
-                'wrapper' => ['class' => 'form-group col-md-8']
-            ],
-        ];
     }
 }

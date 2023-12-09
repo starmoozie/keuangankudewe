@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Constants\TransactionConstant;
+
 class TransactionCategory extends BaseModel
 {
     /*
@@ -38,6 +40,18 @@ class TransactionCategory extends BaseModel
     | ACCESSORS
     |--------------------------------------------------------------------------
     */
+
+    /**
+     * Get type aliases
+     */
+    public function getTypeAliasAttribute()
+    {
+        $type = collect(TransactionConstant::ALL)
+            ->where('value', $this->type)
+            ->first()['label'];
+
+        return __("starmoozie::title.{$type}");
+    }
 
     /*
     |--------------------------------------------------------------------------

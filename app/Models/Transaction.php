@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+
 class Transaction extends BaseModel
 {
-    use \Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
-
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
@@ -59,76 +59,57 @@ class Transaction extends BaseModel
     |--------------------------------------------------------------------------
     */
 
-    public function scopeIncome($query)
+    /**
+     * Select only incomes
+     */
+    public function scopeSelectIncome($query)
     {
         return $query->where('is_income', true);
     }
 
-    public function scopeExpense($query)
+    /**
+     * Select only expenses
+     */
+    public function scopeSelectExpense($query)
     {
         return $query->where('is_income', false);
     }
 
-    public function scopeFromBank($query)
-    {
-        return $query->whereNotNull('details->bank');
-    }
-
-    public function scopeFromWallet($query)
-    {
-        return $query->whereNull('details->bank');
-    }
-
-    public function scopeSplitDebitCredit($query)
-    {
-        return $query->selectRaw("(CASE WHEN is_income = 1 THEN created_at ELSE NULL END) as aa");
-    }
-
+    /**
+     * Select by created_at range
+     */
     function scopeSelectByCreatedRange($query, $dates)
     {
         return $query->whereDate('created_at', '>=', dateFormat($dates->from))
             ->whereDate('created_at', '<=', dateFormat($dates->to));
     }
 
-    function scopeSelectByDatesRange($query, $dates)
+    /**
+     * Select by dates range
+     */
+    function scopeSelectByDatesRange($query, object $dates)
     {
         return $query->whereDate('dates', '>=', dateFormat($dates->from))
             ->whereDate('dates', '<=', dateFormat($dates->to));
     }
 
-    function scopeSelectByCreator($query, $user_id)
+    /**
+     * Select by user creator
+     */
+    function scopeSelectByCreator($query, string $user_id)
     {
         return $query->whereCreatedBy($user_id);
     }
 
-    function scopeSelectByNominalRange($query, $nominal_range)
-    {
-        return $query
-            ->get()
-            ->filter(function ($query) use ($nominal_range) {
-                $total_nominal = (int) str_replace('.', '', $query->total_nominal);
-
-                return $total_nominal >= (int) $nominal_range->from && $total_nominal <= (int) $nominal_range->to;
-            });
-    }
-
     /**
-     * Sum each type
+     * Select sum each type
      */
-    public function scopeSumEachType($query)
+    public function scopeSelectSumEachType($query)
     {
         return $query->groupBy('is_income')->select([
             'is_income',
             \DB::raw('SUM(amount) as total_price'),
         ]);
-    }
-
-    /**
-     * Select by created_at less or equal than x
-     */
-    public function scopeLteCreated($query, $created_at)
-    {
-        return $query->where('created_at', '<=', $created_at);
     }
 
     /**
@@ -139,6 +120,14 @@ class Transaction extends BaseModel
         return $query->whereIn('transaction_category_id', $transaction_category_ids);
     }
 
+    /**
+     * Select only current month
+     */
+    public function scopeSelectCurrentMonth($query)
+    {
+        return $query->whereMonth('dates', Carbon::now());
+    }
+
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS
@@ -146,50 +135,27 @@ class Transaction extends BaseModel
     */
 
     /**
-     * Sum nominal as total_nominal
+     * Append income attributes
      */
-    public function getTotalNominalAttribute(): string
-    {
-        return rupiah(array_sum(array_column($this->details, 'nominal')));
-    }
-
-    public function getDebitAttribute()
+    public function getIncomeAttribute(): string
     {
         return $this->is_income ? $this->amount_formatted : 0;
     }
 
-    public function getCreditAttribute()
+    /**
+     * Append expense attributes
+     */
+    public function getExpenseAttribute(): string
     {
         return !$this->is_income ? $this->amount_formatted : 0;
     }
 
-    public function getAmountFormattedAttribute()
+    /**
+     * Append amount_formatted to rupiah attributes
+     */
+    public function getAmountFormattedAttribute(): string
     {
         return \rupiah($this->amount);
-    }
-
-    /**
-     * Total price of debit where created less or equal than current created
-     */
-    public function getLastTotalDebitAttribute()
-    {
-        return Self::lteCreated($this->created_at)->income()->sum('amount');
-    }
-
-    /**
-     * Total price of credit where created less or equal than current created
-     */
-    public function getLastTotalCreditAttribute()
-    {
-        return Self::lteCreated($this->created_at)->expense()->sum('amount');
-    }
-
-    /**
-     * Current balance
-     */
-    public function getBalanceAttribute()
-    {
-        return rupiah($this->last_total_debit - $this->last_total_credit);
     }
 
     /*
@@ -198,7 +164,10 @@ class Transaction extends BaseModel
     |--------------------------------------------------------------------------
     */
 
-    public function setAmountAttribute($value)
+    /**
+     * Set amount attributes before store to db
+     */
+    public function setAmountAttribute($value): void
     {
         $this->attributes['amount'] = rupiahToNumber($value);
     }
