@@ -176,6 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Spatie\Backup\BackupServiceProvider::class,
+        App\Providers\GoogleDriveServiceProvider::class,
 
     ],
 
