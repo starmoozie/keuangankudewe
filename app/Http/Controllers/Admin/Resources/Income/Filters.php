@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Resources\Income;
 
 use App\Models\TransactionCategory;
-use App\Models\Bank;
+use App\Constants\TransactionConstant;
 
 trait Filters
 {
@@ -20,20 +20,8 @@ trait Filters
 
         $this->dateRangeFilter('dates', 'selectByDatesRange');
 
-        $this->crud->filter('transactioncategory')
-            ->label(__('starmoozie::title.category'))
-            ->type('select2_multiple')
-            ->values(TransactionCategory::pluck('name', 'id')->toArray())
-            ->whenActive(fn ($value) => $this->crud->addClause('selectByTransactionCategory', \json_decode($value)))
-            ->apply();
+        $this->transactionCategoryFilter([TransactionConstant::BOTH, TransactionConstant::INCOME]);
 
-        $this->crud->filter('bank')
-            ->type('select2')
-            ->values(function () {
-                return Bank::pluck('name', 'id')->toArray();
-            })
-            ->whenActive(function ($value) {
-                $this->crud->addClause('where', 'bank_id', $value);
-            });
+        $this->bankFilter();
     }
 }

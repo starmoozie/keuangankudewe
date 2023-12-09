@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Resources\Report;
 
 use App\Models\Bank;
+use App\Constants\TransactionConstant;
 
 trait Filters
 {
@@ -17,25 +18,28 @@ trait Filters
     {
         $this->dateRangeFilter('dates', 'selectByDatesRange');
 
-        $this->crud->filter('bank')
-            ->type('select2')
-            ->values(function () {
-                return Bank::pluck('name', 'id')->toArray();
-            })
-            ->whenActive(function ($value) {
-                $this->crud->addClause('where', 'bank_id', $value);
-            });
+        $this->bankFilter();
 
         $this->crud->filter('type')
             ->type('select2')
-            ->values(function () {
-                return [
-                    0 => 'Expenses',
-                    1 => 'Incomes'
-                ];
-            })
+            ->values(fn () => $this->getTypeOptions())
             ->whenActive(function ($value) {
                 $this->crud->addClause('where', 'is_income', $value);
             });
+    }
+
+    /**
+     * Get transaction type
+     */
+    private function getTypeOptions(): array
+    {
+        $options = [];
+        foreach (TransactionConstant::ALL as $value) {
+            if ($value['value'] !== TransactionConstant::BOTH) {
+                $options[$value['value']] = __("starmoozie::title.{$value['label']}");
+            }
+        }
+
+        return $options;
     }
 }
