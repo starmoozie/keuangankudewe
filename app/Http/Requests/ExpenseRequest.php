@@ -15,17 +15,24 @@ class ExpenseRequest extends BaseRequest
     public function rules()
     {
         return [
-            'bank' => [
+            'dates' => [
                 'required',
-                Rule::exists(Bank::class, 'id')
+                'date'
+            ],
+            'transactionCategory' => [
+                'required',
+                Rule::exists(TransactionCategory::class, 'id'),
             ],
             'amount' => [
                 'required',
                 'max:15'
             ],
-            'dates' => [
+            'bank' => [
                 'required',
-                'date'
+                Rule::exists(Bank::class, 'id'),
+            ],
+            'notes' => [
+                'required',
             ]
         ];
     }
