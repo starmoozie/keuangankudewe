@@ -36,6 +36,7 @@ class IncomeCrudController extends BaseCrudController
     public function setup()
     {
         parent::setup();
+
         if (!\request()->has('dates')) {
             $this->crud->addClause('selectCurrentMonth');
         }
