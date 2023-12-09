@@ -117,7 +117,7 @@ return [
              * The disk names on which the backups will be stored.
              */
             'disks' => [
-                'google',
+                // 'google', if you are using google drive
                 'local',
             ],
         ],
