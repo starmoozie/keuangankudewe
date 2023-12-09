@@ -1,5 +1,6 @@
-<h3 algin="center">Simple Finance</h3>
-![image info](./images/report.png)
+<p align="center">
+    <a href="#" ><img src="https://raw.githubusercontent.com/starmoozie/keuangankudewe/dev/images/report.png" alt="Report"></a>
+</p>
 
 ## About App
 
