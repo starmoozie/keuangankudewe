@@ -6,8 +6,6 @@ use Carbon\Carbon;
 
 class Transaction extends BaseModel
 {
-    use \Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
-
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
@@ -61,35 +59,50 @@ class Transaction extends BaseModel
     |--------------------------------------------------------------------------
     */
 
+    /**
+     * Select only incomes
+     */
     public function scopeSelectIncome($query)
     {
         return $query->where('is_income', true);
     }
 
+    /**
+     * Select only expenses
+     */
     public function scopeSelectExpense($query)
     {
         return $query->where('is_income', false);
     }
 
+    /**
+     * Select by created_at range
+     */
     function scopeSelectByCreatedRange($query, $dates)
     {
         return $query->whereDate('created_at', '>=', dateFormat($dates->from))
             ->whereDate('created_at', '<=', dateFormat($dates->to));
     }
 
-    function scopeSelectByDatesRange($query, $dates)
+    /**
+     * Select by dates range
+     */
+    function scopeSelectByDatesRange($query, object $dates)
     {
         return $query->whereDate('dates', '>=', dateFormat($dates->from))
             ->whereDate('dates', '<=', dateFormat($dates->to));
     }
 
-    function scopeSelectByCreator($query, $user_id)
+    /**
+     * Select by user creator
+     */
+    function scopeSelectByCreator($query, string $user_id)
     {
         return $query->whereCreatedBy($user_id);
     }
 
     /**
-     * Sum each type
+     * Select sum each type
      */
     public function scopeSelectSumEachType($query)
     {
@@ -107,6 +120,9 @@ class Transaction extends BaseModel
         return $query->whereIn('transaction_category_id', $transaction_category_ids);
     }
 
+    /**
+     * Select only current month
+     */
     public function scopeSelectCurrentMonth($query)
     {
         return $query->whereMonth('dates', Carbon::now());
@@ -118,17 +134,26 @@ class Transaction extends BaseModel
     |--------------------------------------------------------------------------
     */
 
-    public function getIncomeAttribute()
+    /**
+     * Append income attributes
+     */
+    public function getIncomeAttribute(): string
     {
         return $this->is_income ? $this->amount_formatted : 0;
     }
 
-    public function getExpenseAttribute()
+    /**
+     * Append expense attributes
+     */
+    public function getExpenseAttribute(): string
     {
         return !$this->is_income ? $this->amount_formatted : 0;
     }
 
-    public function getAmountFormattedAttribute()
+    /**
+     * Append amount_formatted to rupiah attributes
+     */
+    public function getAmountFormattedAttribute(): string
     {
         return \rupiah($this->amount);
     }
@@ -139,7 +164,10 @@ class Transaction extends BaseModel
     |--------------------------------------------------------------------------
     */
 
-    public function setAmountAttribute($value)
+    /**
+     * Set amount attributes before store to db
+     */
+    public function setAmountAttribute($value): void
     {
         $this->attributes['amount'] = rupiahToNumber($value);
     }

@@ -28,6 +28,7 @@ return [
     'transactioncategory' => 'Transaction Category',
     'calculate' => 'Calculate',
     'master' => 'Master',
+    'both' => 'Both',
 
     // Tabs
     'general' => 'General',

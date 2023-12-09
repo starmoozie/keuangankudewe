@@ -90,6 +90,9 @@ class User extends Authenticatable
     |--------------------------------------------------------------------------
     */
 
+    /**
+     * Select by role
+     */
     public function scopeSelectByRole($query, $value)
     {
         return $query->whereRoleId($value);

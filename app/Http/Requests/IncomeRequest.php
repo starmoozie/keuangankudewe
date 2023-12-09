@@ -4,8 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Validation\Rule;
 use App\Models\{
+    TransactionCategory,
     Bank,
-    TransactionCategory
 };
 
 class IncomeRequest extends BaseRequest

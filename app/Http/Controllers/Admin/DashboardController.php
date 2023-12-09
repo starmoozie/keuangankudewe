@@ -78,7 +78,7 @@ class DashboardController extends Controller
     /**
      * Calculate balance ( total sales - total expenses )
      */
-    private function calculateBalance($transactions)
+    private function calculateBalance($transactions): string
     {
         $income   = $transactions->where('is_income', 1)->sum('total_price');
         $expenses = $transactions->where('is_income', 0)->sum('total_price');
@@ -92,7 +92,9 @@ class DashboardController extends Controller
     private function handleEloquentToWidgets($transactions, $size): array
     {
         return $transactions->map(function ($transaction) use ($size) {
-            $constant = collect(TransactionConstant::ALL)->where('value', $transaction->is_income)->first();
+            $constant = collect(array_filter(TransactionConstant::ALL, fn ($item) => $item['value'] !== TransactionConstant::BOTH))
+                ->where('value', $transaction->is_income)
+                ->first();
 
             return $this->mapCardWidgets(
                 $constant['label'],

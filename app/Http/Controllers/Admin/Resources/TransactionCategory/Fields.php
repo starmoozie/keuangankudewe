@@ -20,7 +20,7 @@ trait Fields
             ->type('radio')
             ->inline(true)
             ->options($type_options)
-            ->default(TransactionConstant::EXPENSE)
+            ->default(TransactionConstant::BOTH)
             ->size(6);
 
         $this->crud->field('name')
@@ -28,7 +28,10 @@ trait Fields
             ->size(6);
     }
 
-    private function getTypeOptions()
+    /**
+     * Get transaction type
+     */
+    private function getTypeOptions(): array
     {
         $options = [];
         foreach (TransactionConstant::ALL as $value) {

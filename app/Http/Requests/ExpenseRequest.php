@@ -3,7 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Validation\Rule;
-use App\Models\Bank;
+use App\Models\{
+    TransactionCategory,
+    Bank,
+};
 
 class ExpenseRequest extends BaseRequest
 {

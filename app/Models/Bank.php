@@ -51,6 +51,9 @@ class Bank extends BaseModel
     |--------------------------------------------------------------------------
     */
 
+    /**
+     * Append balance attributes
+     */
     public function getBalanceAttribute()
     {
         return \rupiah($this->incomes - $this->expenses);
