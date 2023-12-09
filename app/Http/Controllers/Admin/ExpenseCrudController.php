@@ -14,6 +14,23 @@ class ExpenseCrudController extends BaseCrudController
     protected $scopes  = [
         'selectExpense'
     ];
+    protected $orders  = [
+        ['name' => 'dates', 'type' => 'desc'],
+        ['name' => 'created_at', 'type' => 'desc'],
+    ];
+
+    /**
+     * Configure the CrudPanel object. Apply settings to all operations.
+     * 
+     * @return void
+     */
+    public function setup()
+    {
+        parent::setup();
+        if (!\request()->has('dates')) {
+            $this->crud->addClause('selectCurrentMonth');
+        }
+    }
 
     /**
      * Store a newly created resource in the database.

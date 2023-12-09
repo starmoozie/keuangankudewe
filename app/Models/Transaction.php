@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+
 class Transaction extends BaseModel
 {
     use \Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
@@ -103,6 +105,11 @@ class Transaction extends BaseModel
     public function scopeSelectByTransactionCategory($query, array $transaction_category_ids)
     {
         return $query->whereIn('transaction_category_id', $transaction_category_ids);
+    }
+
+    public function scopeSelectCurrentMonth($query)
+    {
+        return $query->whereMonth('dates', Carbon::now());
     }
 
     /*
