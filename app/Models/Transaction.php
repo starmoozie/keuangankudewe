@@ -128,6 +128,25 @@ class Transaction extends BaseModel
         return $query->whereMonth('dates', Carbon::now());
     }
 
+    /**
+     * Select order by relationship
+     */
+    public function scopeOrderByRelationship($query, $relationship, $orderDirection)
+    {
+        $to_snake_relation_name = \Str::snake($relationship['name']);
+
+        return $query->withAggregate($relationship['name'], $relationship['column'])
+            ->orderBy("{$to_snake_relation_name}_{$relationship['column']}", $orderDirection);
+    }
+
+    /**
+     * Select order by amount
+     */
+    public function scopeOrderByAmount($query, $direction)
+    {
+        return $query->orderByRaw("CONVERT(amount, SIGNED) {$direction}");
+    }
+
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS
