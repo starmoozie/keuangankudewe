@@ -42,6 +42,9 @@ trait Columns
             ->orderable(true)
             ->orderLogic(
                 fn ($query, $crud_column, $direction) => $query->orderByAmount($direction)
+            )
+            ->searchLogic(
+                fn ($query, $column, $searchTerm) => $query->orWhere('amount', 'like', '%'.$searchTerm.'%')
             );
     }
 }

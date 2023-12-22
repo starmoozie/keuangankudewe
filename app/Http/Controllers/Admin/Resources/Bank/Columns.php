@@ -19,6 +19,7 @@ trait Columns
             ->wrapper([
                 'element' => 'div',
                 'class'   => 'text-right'
-            ]);
+            ])
+            ->searchLogic(false);
     }
 }

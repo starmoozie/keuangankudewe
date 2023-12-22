@@ -15,6 +15,7 @@ trait Columns
             ->label(__('starmoozie::base.name'));
 
         $this->crud->column('type_alias')
-            ->label(__('starmoozie::title.category'));
+            ->label(__('starmoozie::title.category'))
+            ->searchLogic(false);
     }
 }
