@@ -53,6 +53,6 @@ if (!function_exists('mappingSidebar')) {
             }
         }
 
-        return $menu;
+        return $menu->unique('id');
     }
 }
