@@ -44,19 +44,7 @@ class UserCrudController extends BaseCrudController
     {
         $request = $this->crud->getRequest();
 
-        $this->handleRelationships($request);
-
         $this->handleValidation($request);
-    }
-
-    /**
-     * Handle model relationships.
-     */
-    protected function handleRelationships($request): void
-    {
-        $this->addRequest($request, ["group_ids" => $request->groups]);
-
-        $this->removeRequest($request, ["groups"]);
     }
 
     /**
