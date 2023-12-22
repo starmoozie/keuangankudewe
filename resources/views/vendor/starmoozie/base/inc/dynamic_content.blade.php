@@ -1,11 +1,11 @@
 <!-- This file is used to store sidebar items, starting with Starmoozie\Base 0.9.0 -->
 
-@foreach ($menu as $menu_item)
+@foreach ($sidebar as $menu_item)
     @if ($menu_item->children->count() AND ($menu_item->route === '#' OR !$menu_item->route))
         <li class="nav-item nav-dropdown">
             <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon {{ $menu_item->icon ? $menu_item->icon : 'fa fa-list' }}"></i> {{ __("starmoozie::title.".transReplace($menu_item->name)) }}</a>
             <ul class="nav-dropdown-items">
-                @foreach ($menu_item->children as $child)
+                @foreach ($menu_item->children->unique('name') as $child)
                     <li class="nav-item">
                         @if ($child->children->count() && !$child->route)
                             @includeIf('dynamic_view::sub_sidebar')

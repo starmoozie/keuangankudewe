@@ -8,6 +8,7 @@
         "php": "^7.3|^8.0",
         "alajusticia/laravel-auth-tracker": "^2.1",
         "fruitcake/laravel-cors": "^2.0",
+        "genealabs/laravel-model-caching": "^0.11.3",
         "guzzlehttp/guzzle": "^7.0.1",
         "jenssegers/agent": "^2.6",
         "laravel/framework": "^8.75",

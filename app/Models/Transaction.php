@@ -20,7 +20,7 @@ class Transaction extends BaseModel
         'dates',
         'amount',
         'bank_id',
-        'notes'
+        'notes',
     ];
     protected $casts    = [
         'details' => 'array'
@@ -147,6 +147,18 @@ class Transaction extends BaseModel
         return $query->orderByRaw("CONVERT(amount, SIGNED) {$direction}");
     }
 
+    /**
+     * 
+     */
+    public function scopeWhereInJson($query, string $column, array $values)
+    {
+        return $query->where(function ($query) use ($column, $values) {
+            foreach ($values as $value) {
+                $query->orWhereJsonContains("{$column}", $value);
+            }
+        });
+    }
+
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS
@@ -189,5 +201,13 @@ class Transaction extends BaseModel
     public function setAmountAttribute($value): void
     {
         $this->attributes['amount'] = rupiahToNumber($value);
+    }
+
+    /**
+     * Set user for attributes before store to db
+     */
+    public function setDetailsAttribute($value)
+    {
+        $this->attributes['details'] = \json_encode($value);
     }
 }

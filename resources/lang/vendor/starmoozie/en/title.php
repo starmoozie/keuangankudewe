@@ -29,6 +29,11 @@ return [
     'calculate' => 'Calculate',
     'master' => 'Master',
     'both' => 'Both',
+    'ayah' => 'Ayah',
+    'bunda' => 'Bunda',
+    'aqila' => 'Aqila',
+    'all' => 'ALL',
+    'used_for' => 'Used For',
 
     // Tabs
     'general' => 'General',

@@ -18,5 +18,11 @@ trait Filters
         $this->transactionCategoryFilter(Self::TRANSACTION_CATEGORY);
 
         $this->bankFilter();
+
+        $this->crud->filter('used_for')
+            ->label(__('starmoozie::title.used_for'))
+            ->type('select2_multiple')
+            ->values(fn () => $this->usedFor())
+            ->whenActive(fn ($values) => $this->crud->addClause('whereInJson', 'details', \json_decode($values)));
     }
 }

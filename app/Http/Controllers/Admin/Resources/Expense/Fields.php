@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin\Resources\Expense;
 
+use App\Constants\TransactionConstant;
+
 trait Fields
 {
     /**
@@ -24,16 +26,33 @@ trait Fields
 
         $this->crud->field('amount')
             ->label(__('starmoozie::title.amount'))
-            ->size(6)
+            ->size(4)
             ->masking(['format' => '#.##0']);
 
         $this->crud->field('bank')
             ->label(__('starmoozie::title.bank'))
-            ->size(6)
+            ->size(4)
             ->options(fn ($query) => $query->orderBy('name'));
+
+        $this->crud->field('details')
+            ->label(__('starmoozie::title.used_for'))
+            ->type('select2_from_array')
+            ->options($this->usedFor())
+            ->allows_multiple(true)
+            ->size(4);
 
         $this->crud->field('notes')
             ->label(__('starmoozie::title.note'))
             ->type('textarea');
+    }
+
+    private function usedFor()
+    {
+        $items = [];
+        foreach (TransactionConstant::USED_FOR as $item) {
+            $items[$item['value']] = __("starmoozie::title.{$item['label']}");
+        }
+
+        return $items;
     }
 }
