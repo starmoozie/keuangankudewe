@@ -20,6 +20,7 @@ trait Columns
                 'element' => 'div',
                 'class'   => 'text-right'
             ])
-            ->searchLogic(false);
+            ->searchLogic(false)
+            ->orderable(false);
     }
 }
