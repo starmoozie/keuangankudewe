@@ -19,12 +19,18 @@ Route::group([
 
     // if configured, setup the dashboard routes
     if (!config('starmoozie.base.setup_dashboard_routes')) {
-        Route::get('dashboard', 'DashboardController@dashboard')->name('starmoozie.dashboard');
+        Route::get('dashboard', 'DashboardController@dashboard')->name('starmoozie.dashboard')->middleware('doNotCacheResponse');
         Route::get('/', 'DashboardController@redirect')->name('starmoozie');
     }
 
     if (!config('starmoozie.base.setup_user_url')) {
         Route::crud('user', 'UserCrudController');
+    }
+
+    if (!config('starmoozie.base.setup_my_account_routes')) {
+        Route::get('edit-account-info', 'ProfileController@getAccountInfoForm')->name('starmoozie.account.info')->middleware('doNotCacheResponse');
+        Route::post('edit-account-info', 'ProfileController@postAccountInfoForm')->name('starmoozie.account.info.store');
+        Route::post('change-password', 'ProfileController@postChangePasswordForm')->name('starmoozie.account.password');
     }
 
     if (\Illuminate\Support\Facades\Schema::hasTable('menu') && class_exists(\Starmoozie\LaravelMenuPermission\app\Models\Menu::class)) {
