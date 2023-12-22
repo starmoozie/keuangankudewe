@@ -16,27 +16,33 @@ trait Columns
             ->type('date');
 
         $this->crud->column('bank')
-            ->label(__('starmoozie::title.bank'));
+            ->label(__('starmoozie::title.bank'))
+            ->orderLogic(
+                fn ($query, $crud_column, $direction) => $query->orderByRelationship(['name' => 'bank', 'column' => 'name'], $direction)
+            );
 
         $this->crud->column('income')
             ->label(__('starmoozie::title.income'))
             ->wrapper([
                 'element' => 'div',
                 'class'   => 'text-right'
-            ]);
+            ])
+            ->orderable(false);
 
         $this->crud->column('expense')
             ->label(__('starmoozie::title.expense'))
             ->wrapper([
                 'element' => 'div',
                 'class'   => 'text-right'
-            ]);
+            ])
+            ->orderable(false);
 
         $this->crud->column('')
             ->label(__('starmoozie::title.balance'))
             ->wrapper([
                 'element' => 'div',
                 'class'   => 'text-right'
-            ]);
+            ])
+            ->orderable(false);
     }
 }
