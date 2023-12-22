@@ -113,15 +113,17 @@ class User extends Authenticatable
     public function getMenuAttribute()
     {
         $user = \starmoozie_user();
-        $user->load(['role:id,options']);
 
-        return $user
-            ->role
-            ->menuPermission()
-            ->joinMenuPermission()
-            ->select(['m.id', 'm.name', 'route', 'lft', 'rgt', 'depth', 'parent_id', 'p.name as permission'])
-            ->orderBy('lft')
-            ->get();
+        return \Cache::rememberForever("{$user->id}", function () use ($user) {
+            $user->load(['role:id,options']);
+
+            return $user->role
+                ->menuPermission()
+                ->joinMenuPermission()
+                ->select(['m.id', 'm.name', 'route', 'lft', 'rgt', 'depth', 'parent_id', 'p.name as permission'])
+                ->orderBy('lft')
+                ->get();
+        });
     }
 
     // public function getSidebarAttribute()

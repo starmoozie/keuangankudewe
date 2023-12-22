@@ -59,6 +59,7 @@ class DashboardController extends Controller
     private function widgets(): array
     {
         $transactions = Transaction::selectSumEachType()
+            ->when($this->checkAccess(), fn ($q) => $q->selectByCreator(starmoozie_user()->id))
             ->orderByDesc('is_income')
             ->get();
 
@@ -123,5 +124,17 @@ class DashboardController extends Controller
             'description'   => "<a href='{$href}'>{$desc}</a>",
             'hint'          => __("starmoozie::title.hint_{$label}_dashboard")
         ];
+    }
+
+    /**
+     * Check if user has access personal on income or expense menu
+     */
+    private function checkAccess()
+    {
+        return starmoozie_user()
+            ->menu
+            ->whereIn('name', ['Income', 'Expense'])
+            ->where('permission', 'Personal')
+            ->count();
     }
 }

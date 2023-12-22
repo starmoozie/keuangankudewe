@@ -34,6 +34,8 @@ class UserCrudController extends BaseCrudController
     {
         $this->handleRequest();
 
+        \Cache::forget($this->crud->getRequest()->id);
+
         return $this->traitUpdate();
     }
 
