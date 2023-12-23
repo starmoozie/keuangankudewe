@@ -39,6 +39,8 @@ class DashboardController extends Controller
             ->type('div')
             ->content($this->widgets());
 
+        Widget::add()->type('progress_loader');
+
         return view(starmoozie_view('dashboard'), $this->data);
     }
 
@@ -58,83 +60,23 @@ class DashboardController extends Controller
      */
     private function widgets(): array
     {
-        $transactions = Transaction::selectSumEachType()
-            ->when($this->checkAccess(), fn ($q) => $q->selectByCreator(starmoozie_user()->id))
-            ->orderByDesc('is_income')
-            ->get();
+        return array_map(function($item) {
+            $size  = 12 / count(TransactionConstant::DASHBOARD);
+            $label = $item['label'];
+            $color = $item['color'];
+            $href  = starmoozie_url($item['endpoint']);
+            $desc = __("starmoozie::title.{$label}");
 
-        $size = 12 / ($transactions->count() + 1);
-
-        return [
-            ...$this->handleEloquentToWidgets($transactions, $size),
-            ...[$this->mapCardWidgets(
-                'balance',
-                'primary',
-                $this->calculateBalance($transactions),
-                $size
-            )]
-        ];
-    }
-
-    /**
-     * Calculate balance ( total sales - total expenses )
-     */
-    private function calculateBalance($transactions): string
-    {
-        $income   = $transactions->where('is_income', 1)->sum('total_price');
-        $expenses = $transactions->where('is_income', 0)->sum('total_price');
-
-        return $income - $expenses;
-    }
-
-    /**
-     * Mapping eloquent query to widgets
-     */
-    private function handleEloquentToWidgets($transactions, $size): array
-    {
-        return $transactions->map(function ($transaction) use ($size) {
-            $constant = collect(array_filter(TransactionConstant::ALL, fn ($item) => $item['value'] !== TransactionConstant::BOTH))
-                ->where('value', $transaction->is_income)
-                ->first();
-
-            return $this->mapCardWidgets(
-                $constant['label'],
-                $constant['color'],
-                $transaction->total_price,
-                $size
-            );
-        })->toArray();
-    }
-
-    /**
-     * Mapping widget attributes
-     */
-    private function mapCardWidgets($label, $color, $value, $size): array
-    {
-        $desc = __("starmoozie::title.{$label}");
-        $href = \starmoozie_url(\strtolower($label == "balance" ? "report" : $label));
-
-        return [
-            'wrapper'       => ['class' => "col-md-{$size}"],
-            'class'         => "card shadow mb-2",
-            'type'          => 'progress_white',
-            'progress'      => 100,
-            'progressClass' => "progress-bar bg-{$color}",
-            'value'         => rupiah($value),
-            'description'   => "<a href='{$href}'>{$desc}</a>",
-            'hint'          => __("starmoozie::title.hint_{$label}_dashboard")
-        ];
-    }
-
-    /**
-     * Check if user has access personal on income or expense menu
-     */
-    private function checkAccess()
-    {
-        return starmoozie_user()
-            ->menu
-            ->whereIn('name', ['Income', 'Expense'])
-            ->where('permission', 'Personal')
-            ->count();
+            return [
+                'wrapper'       => ['class' => "col-md-{$size}"],
+                'class'         => "card shadow mb-2",
+                'type'          => 'progress_custom',
+                'progress'      => 100,
+                'progressClass' => "progress-bar bg-{$item['color']}",
+                'id'            => $label,
+                'description'   => "<a href='{$href}'>{$desc}</a>",
+                'hint'          => __("starmoozie::title.hint_{$label}_dashboard")
+            ];
+        }, TransactionConstant::DASHBOARD);
     }
 }

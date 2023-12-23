@@ -19,7 +19,7 @@ Route::group([
 
     // if configured, setup the dashboard routes
     if (!config('starmoozie.base.setup_dashboard_routes')) {
-        Route::get('dashboard', 'DashboardController@dashboard')->name('starmoozie.dashboard')->middleware('doNotCacheResponse');
+        Route::get('dashboard', 'DashboardController@dashboard')->name('starmoozie.dashboard');
         Route::get('/', 'DashboardController@redirect')->name('starmoozie');
     }
 
@@ -44,4 +44,6 @@ Route::group([
             Route::{$route->method}($route->route, $route->controller);
         }
     }
+
+    Route::post('fetch/dashboard', 'Api\DashboardApiController@fetch');
 }); // this should be the absolute last line of this file

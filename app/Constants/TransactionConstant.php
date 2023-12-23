@@ -7,11 +7,18 @@ class TransactionConstant
     const EXPENSE  = 0;
     const INCOME   = 1;
     const BOTH     = 2;
+    const BALANCE  = 3;
 
     const ALL      = [
         ['label' => 'expense', 'value' => Self::EXPENSE, 'color' => 'warning'],
         ['label' => 'income', 'value' => Self::INCOME, 'color' => 'success'],
         ['label' => 'both', 'value' => Self::BOTH, 'color' => 'danger'],
+    ];
+
+    const DASHBOARD = [
+        ['label' => 'income', 'value' => Self::INCOME, 'color' => 'success', 'endpoint' => 'income'],
+        ['label' => 'expense', 'value' => Self::EXPENSE, 'color' => 'warning', 'endpoint' => 'expense'],
+        ['label' => 'balance', 'value' => Self::BALANCE, 'color' => 'primary', 'endpoint' => 'report'],
     ];
 
     const FOR_AYAH  = 0;
