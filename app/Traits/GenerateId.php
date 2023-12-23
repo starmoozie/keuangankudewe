@@ -8,8 +8,8 @@ namespace App\Traits;
 trait GenerateId
 {
     /**
-      * Boot function from Laravel.
-    **/
+     * Boot function from Laravel.
+     **/
     protected static function boot()
     {
         parent::boot();
@@ -24,7 +24,7 @@ trait GenerateId
      * Get the value indicating whether the IDs are incrementing.
      *
      * @return bool
-    **/
+     **/
     public function getIncrementing()
     {
         return false;
@@ -32,9 +32,9 @@ trait GenerateId
 
     /**
      * Get the auto-incrementing key type.
-    *
-    * @return string
-    **/
+     *
+     * @return string
+     **/
     public function getKeyType()
     {
         return 'string';

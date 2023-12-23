@@ -29,6 +29,13 @@ class BaseCrudController extends CrudController
     protected $select_columns  = [];
     protected $exclude_columns = [];
 
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('doNotCacheResponse')->only(['edit']);
+    }
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 
