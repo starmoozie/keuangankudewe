@@ -19,8 +19,11 @@ trait Fields
 
         $this->crud->field('transactionCategory')
             ->label(__('starmoozie::title.category'))
-            ->size(6)
-            ->options(fn ($query) => $query->whereIn('type', Self::TRANSACTION_CATEGORY)->orderBy('name'));
+            ->type('relationship')
+            ->ajax(true)
+            ->data_source(starmoozie_url('fetch/transactioncategory'))
+            ->minimum_input_length(0)
+            ->size(6);
 
         $this->crud->field('amount')
             ->label(__('starmoozie::title.amount'))
@@ -29,6 +32,10 @@ trait Fields
 
         $this->crud->field('bank')
             ->label(__('starmoozie::title.bank'))
+            ->type('relationship')
+            ->ajax(true)
+            ->data_source(starmoozie_url('fetch/bank'))
+            ->minimum_input_length(0)
             ->size(6)
             ->options(fn ($query) => $query->orderBy('name'));
 

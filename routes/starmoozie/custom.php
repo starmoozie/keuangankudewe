@@ -44,6 +44,4 @@ Route::group([
             Route::{$route->method}($route->route, $route->controller);
         }
     }
-
-    Route::post('fetch/dashboard', 'Api\DashboardApiController@fetch');
 }); // this should be the absolute last line of this file

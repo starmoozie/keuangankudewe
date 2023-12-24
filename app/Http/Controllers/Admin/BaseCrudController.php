@@ -61,19 +61,7 @@ class BaseCrudController extends CrudController
             CRUD::addClause($scope);
         }
 
-        // If set excluse columns
-        if (count($this->exclude_columns)) {
-            $this->selectColumns(
-                collect((new $this->model)->getFillable())
-                    ->filter(fn ($item) => !in_array($item, $this->exclude_columns))
-                    ->toArray()
-            );
-        }
-
-        // If set select columns
-        if (count($this->select_columns)) {
-            $this->selectColumns($this->select_columns);
-        }
+        $this->selectColumns($this->getListingModelColumns());
     }
 
     /**
@@ -112,6 +100,31 @@ class BaseCrudController extends CrudController
     protected function setupShowOperation()
     {
         $this->setShows();
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function edit($id)
+    {
+        $this->crud->hasAccessOrFail('update');
+        // get entry ID from Request (makes sure its the last ID for nested resources)
+        $id = $this->crud->getCurrentEntryId() ?? $id;
+
+        $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
+        // get the info for that entry
+        $this->data['entry'] = $this->crud->getEntry($id);
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->crud->getSaveAction();
+        $this->data['title'] = $this->crud->getTitle() ?? trans('starmoozie::crud.edit') . ' ' . $this->crud->entity_name;
+
+        $this->data['id'] = $id;
+
+        // load the view from /resources/views/vendor/starmoozie/crud/ if it exists, otherwise load the one in the package
+        return view($this->crud->getEditView(), $this->data);
     }
 
     /**
@@ -170,6 +183,22 @@ class BaseCrudController extends CrudController
     private function selectColumns($columns): void
     {
         // Select columns query
-        CRUD::addClause('select', [...$columns, ...['id']]);
+        CRUD::addClause('select', $columns);
+    }
+
+    private function getListingModelColumns(): array
+    {
+        // If set excluse columns
+        if (count($this->exclude_columns)) {
+            $columns = collect((new $this->model)->getFillable())
+                ->filter(fn ($item) => !in_array($item, $this->exclude_columns))
+                ->toArray();
+        } elseif (count($this->select_columns)) {
+            $columns = $this->select_columns;
+        } else {
+            $columns = $this->crud->model->getFillable();
+        }
+
+        return [...$columns, ...['id']];
     }
 }

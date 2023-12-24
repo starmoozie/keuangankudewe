@@ -31,6 +31,24 @@ class RouteSeeder extends Seeder
             'method'       => 'get', // crud, get, post, put, patch, delete
             'controller'   => 'Api\BankApiController@filter', // Name of controller
             'type'         => 'dashboard_api' // dashboard, api, dahsboard_api, web
+        ],
+        [
+            'route'        => 'fetch/dashboard', // Name of route menu
+            'method'       => 'post', // crud, get, post, put, patch, delete
+            'controller'   => 'Api\DashboardApiController@filter', // Name of controller
+            'type'         => 'dashboard_api' // dashboard, api, dahsboard_api, web
+        ],
+        [
+            'route'        => 'fetch/transactioncategory', // Name of route menu
+            'method'       => 'post', // crud, get, post, put, patch, delete
+            'controller'   => 'Api\TransactionCategoryApiController@filter', // Name of controller
+            'type'         => 'dashboard_api' // dashboard, api, dahsboard_api, web
+        ],
+        [
+            'route'        => 'fetch/bank', // Name of route menu
+            'method'       => 'post', // crud, get, post, put, patch, delete
+            'controller'   => 'Api\BankApiController@filter', // Name of controller
+            'type'         => 'dashboard_api' // dashboard, api, dahsboard_api, web
         ]
     ];
 

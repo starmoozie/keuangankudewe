@@ -7,11 +7,36 @@ use Illuminate\Http\Request;
 
 class BaseApiController extends Controller
 {
-    public function filter(Request $request)
+    protected $selectColumns = [
+        "name",
+        "id"
+    ];
+
+    /**
+     * default all model query
+     */
+    protected function defaultQuery($request)
     {
         return (new $this->model)
-            ->when($request->q, fn ($q) => $q->where($this->column, "LIKE", "%{$request->q}%"))
-            ->orderBy($this->column)
-            ->pluck($this->column, 'id');
+            ->where($this->column, "LIKE", "%{$request->q}%")
+            ->select($this->selectColumns)
+            ->orderBy($this->column);
+    }
+
+    /**
+     * Filter list operations
+     */
+    public function filter(Request $request)
+    {
+        return $this->defaultQuery($request)
+            ->pluck($this->selectColumns[0], $this->selectColumns[1]);
+    }
+
+    /**
+     * Fetch field operations
+     */
+    public function fetch(Request $request)
+    {
+        return $this->defaultQuery($request)->paginate(10);
     }
 }

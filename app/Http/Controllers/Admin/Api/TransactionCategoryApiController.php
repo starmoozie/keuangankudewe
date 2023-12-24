@@ -10,6 +10,9 @@ class TransactionCategoryApiController extends BaseApiController
     protected $model  = Model::class;
     protected $column = "name";
 
+    /**
+     * Filter list operations
+     */
     public function filter(Request $request)
     {
         return (new $this->model)
