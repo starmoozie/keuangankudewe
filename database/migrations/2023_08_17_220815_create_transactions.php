@@ -19,7 +19,7 @@ class CreateTransactions extends Migration
             $table->string('created_by', 14)->index();
             $table->json('details');
             $table->boolean('is_income')->default(false);
-            $table->date('dates');
+            $table->date('dates')->index();
             $table->string('amount', 15);
             $table->uuid('bank_id')->index();
             $table->text('notes')->nullable();
