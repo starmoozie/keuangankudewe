@@ -31,7 +31,6 @@ class User extends Authenticatable
         'password',
         'mobile',
         'role_id',
-        'group_ids'
     ];
 
     /**
@@ -50,8 +49,7 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'group_ids' => 'array'
+        'email_verified_at' => 'datetime'
     ];
 
     /*
@@ -71,15 +69,6 @@ class User extends Authenticatable
         return $this->belongsTo(
             \Starmoozie\LaravelMenuPermission\app\Models\Role::class,
             'role_id',
-            'id'
-        );
-    }
-
-    public function groups()
-    {
-        return $this->belongsToJson(
-            Group::class,
-            'group_ids',
             'id'
         );
     }
