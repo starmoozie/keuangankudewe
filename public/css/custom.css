@@ -1,4 +1,3 @@
-
 .btn,
 .card,
 .round,
@@ -35,9 +34,11 @@ a:hover {
 #crudTable_length select:hover {
     transform: translate(0, -1px);
     border-color: #7c69ef;
-    filter: drop-shadow(0 12px 24px rgb(104 112 118 / 0.15)) drop-shadow(0 12px 14px rgb(104 112 118 / 0.1));
+    filter: drop-shadow(0 12px 24px rgb(104 112 118 / 0.15))
+        drop-shadow(0 12px 14px rgb(104 112 118 / 0.1));
 }
 
+select:hover,
 .select2-hidden-accessible + .select2-container .select2-selection:hover,
 textarea:hover,
 input:hover,
@@ -46,7 +47,8 @@ input:hover,
 .btn:hover,
 #crudTable:hover {
     transform: translate(0, -1px);
-    filter: drop-shadow(0 12px 24px rgb(104 112 118 / 0.15)) drop-shadow(0 12px 14px rgb(104 112 118 / 0.1));
+    filter: drop-shadow(0 12px 24px rgb(104 112 118 / 0.15))
+        drop-shadow(0 12px 14px rgb(104 112 118 / 0.1));
 }
 
 .dataTables_paginate ul li.paginate_button.page-item.active a {
@@ -59,7 +61,12 @@ input:hover,
 }
 
 .select2-hidden-accessible + .select2-container .select2-selection:hover,
+select:hover,
 textarea:hover,
 input:hover {
     border-color: #7c69ef !important;
+}
+
+select:hover {
+    cursor: pointer;
 }
