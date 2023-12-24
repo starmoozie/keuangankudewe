@@ -55,4 +55,6 @@ return [
 
     // Nest action buttons within a dropdown in actions column
     'lineButtonsAsDropdown' => true,
+
+    'showEntryCount' => true,
 ];

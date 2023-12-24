@@ -129,6 +129,7 @@
             localStorage.setItem('{{ Str::slug($crud->getRoute()) }}_list_url', new_url);
         },
         dataTableConfiguration: {
+            bInfo: {{ var_export($crud->getOperationSetting('showEntryCount') ?? true) }},
             @if ($crud->getResponsiveTable())
                 responsive: {
                     details: {
@@ -252,7 +253,10 @@
             searching: @json($crud->getOperationSetting('searchableTable') ?? true),
             ajax: {
                 "url": "{!! url($crud->route.'/search').'?'.Request::getQueryString() !!}",
-                "type": "POST"
+                "type": "POST",
+                "data": {
+                    "unfilteredQueryCount": "{{$crud->getOperationSetting('unfilteredQueryCount') ?? false}}"
+                },
             },
             dom:
                 "<'row hidden'<'col-sm-6'i><'col-sm-6 d-print-none'f>>" +
