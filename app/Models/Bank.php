@@ -10,7 +10,7 @@ class Bank extends BaseModel
     |--------------------------------------------------------------------------
     */
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'balance'];
 
     /*
     |--------------------------------------------------------------------------
@@ -54,9 +54,9 @@ class Bank extends BaseModel
     /**
      * Append balance attributes
      */
-    public function getBalanceAttribute()
+    public function getBalanceFormattedAttribute()
     {
-        return \rupiah($this->incomes - $this->expenses);
+        return \rupiah($this->balance);
     }
 
     /*

@@ -16,6 +16,7 @@ class CreateBanks extends Migration
         Schema::create('banks', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name', 15)->unique();
+            $table->string('balance', 15)->nullable();
             $table->timestamps();
         });
     }

@@ -51,6 +51,16 @@ class ExpenseCrudController extends BaseCrudController
     {
         $this->addRequest($this->crud->getRequest(), ['created_by' => starmoozie_user()->id]);
 
-        return $this->traitStore();
+        return $this->defaultLogic("create");
+    }
+
+    /**
+     * Update the specified resource in the database.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function update()
+    {
+        return $this->defaultLogic("update");
     }
 }
