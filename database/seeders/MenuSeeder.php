@@ -63,6 +63,12 @@ class MenuSeeder extends Seeder
             'permissions' => ['read'],
             'controller'  => null
         ],
+        [
+            'name'        => 'mutation',
+            'route'       => 'mutation',
+            'permissions' => ['create', 'read', 'update', 'delete', 'show', 'personal'],
+            'controller'  => 'MutationCrudController'
+        ],
     ];
 
     /**

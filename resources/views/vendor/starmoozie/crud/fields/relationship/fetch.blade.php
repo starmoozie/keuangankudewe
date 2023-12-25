@@ -213,12 +213,17 @@
                             return {
                                 q: params.term, // search term
                                 page: params.page, // pagination
-                                form: formSerializeArray // all other form inputs
+                                form: formSerializeArray, // all other form inputs,
+                                current: "{{ $field['name'] }}",
+                                dependencies: $dependency
                             };
                         } else {
                             return {
                                 q: params.term, // search term
                                 page: params.page, // pagination
+                                form: [],
+                                current: "{{ $field['name'] }}",
+                                dependencies: $dependency
                             };
                         }
                     },

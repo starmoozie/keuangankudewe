@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Admin\Resources\Expense;
 
-use App\Constants\TransactionConstant;
-
 trait Fields
 {
     /**
@@ -25,8 +23,7 @@ trait Fields
             ->ajax(true)
             ->data_source(starmoozie_url('fetch/transactioncategory'))
             ->minimum_input_length(0)
-            ->size(6)
-            ->options(fn ($query) => $query->whereIn('type', Self::TRANSACTION_CATEGORY)->orderBy('name'));
+            ->size(6);
 
         $this->crud->field('amount')
             ->label(__('starmoozie::title.amount'))
@@ -39,8 +36,7 @@ trait Fields
             ->ajax(true)
             ->data_source(starmoozie_url('fetch/bank'))
             ->minimum_input_length(0)
-            ->size(4)
-            ->options(fn ($query) => $query->orderBy('name'));
+            ->size(4);
 
         $this->crud->field('details')
             ->label(__('starmoozie::title.used_for'))

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Resources\Income;
+namespace App\Http\Controllers\Admin\Resources\Mutation;
 
 trait Fields
 {
@@ -13,16 +13,7 @@ trait Fields
     {
         $this->crud->field('dates')
             ->label(__('starmoozie::title.date'))
-            ->type('date')
             ->default(date('Y-m-d'))
-            ->size(6);
-
-        $this->crud->field('transactionCategory')
-            ->label(__('starmoozie::title.category'))
-            ->type('relationship')
-            ->ajax(true)
-            ->data_source(starmoozie_url('fetch/transactioncategory'))
-            ->minimum_input_length(0)
             ->size(6);
 
         $this->crud->field('amount')
@@ -30,16 +21,24 @@ trait Fields
             ->size(6)
             ->masking(['format' => '#.##0']);
 
-        $this->crud->field('bank')
-            ->label(__('starmoozie::title.bank'))
+        $this->crud->field('from')
+            ->label(__('starmoozie::title.from'))
             ->type('relationship')
             ->ajax(true)
             ->data_source(starmoozie_url('fetch/bank'))
             ->minimum_input_length(0)
             ->size(6);
 
+        $this->crud->field('to')
+            ->label(__('starmoozie::title.to'))
+            ->type('relationship')
+            ->ajax(true)
+            ->data_source(starmoozie_url('fetch/bank'))
+            ->minimum_input_length(0)
+            ->size(6)
+            ->dependencies(['from']);
+
         $this->crud->field('notes')
-            ->label(__('starmoozie::title.note'))
-            ->type('textarea');
+            ->label(__('starmoozie::title.note'));
     }
 }

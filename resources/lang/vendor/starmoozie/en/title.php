@@ -34,6 +34,9 @@ return [
     'aqila' => 'Aqila',
     'all' => 'ALL',
     'used_for' => 'Used For',
+    'mutation' => 'Mutation',
+    'from' => 'From',
+    'to' => 'To',
 
     // Tabs
     'general' => 'General',
