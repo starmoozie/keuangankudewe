@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin\Resources\Expense;
 
+use App\Constants\TransactionConstant;
+
 trait Fields
 {
     /**

@@ -50,7 +50,7 @@ class IncomeCrudController extends BaseCrudController
      */
     public function store()
     {
-        $this->addRequest($this->crud->getRequest(), ['created_by' => starmoozie_user()->id, 'is_income' => TransactionContext::INCOME]);
+        $this->addRequest($this->crud->getRequest(), ['created_by' => starmoozie_user()->id, 'is_income' => TransactionConstant::INCOME]);
 
         return $this->defaultLogic("create");
     }
